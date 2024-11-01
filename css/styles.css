@@ -1,0 +1,65 @@
+.imagen-con-texto {
+    position: relative;
+    display: inline-block; /* Asegura que el contenedor se ajuste a la imagen */
+}
+.imagen-con-texto img {
+    display: block; /* Elimina el espacio debajo de la imagen */
+    width: 100%; /* Ajusta el tamaño de la imagen según sea necesario */
+    height: auto; /* Mantiene la proporción de la imagen */
+}
+.texto {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white; /* Color del texto */
+   
+    padding: 10px; /* Espaciado alrededor del texto */
+    border-radius: 5px; /* Esquinas redondeadas */
+    font-size: 50px;
+}
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.fondo-fuegos {
+    position: relative;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    display: flex; /* Centra el contenido */
+    flex-direction: column; /* Organiza el contenido en columna */
+    align-items: center; /* Centra horizontalmente */
+    justify-content: center; /* Centra verticalmente */
+    color: white; /* Color del texto */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejor visibilidad del texto */
+    overflow: hidden; /* Oculta cualquier desbordamiento */
+}
+.video-fondo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1; /* Envía el video al fondo */
+    transform: translate(-50%, -50%);
+}
+.este {
+    max-height: 35em;
+    line-height: 1em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+  }
+.titulo{
+    text-align: center; 
+    font-family: Arial Black; 
+    font-weight: bold; 
+    font-size: 45px; 
+    color: #fff; 
+    text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+    margin-bottom: 35px;
+    font-style: italic;
+    text-decoration: underline;    
+  }

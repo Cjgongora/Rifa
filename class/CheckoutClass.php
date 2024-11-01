@@ -93,28 +93,35 @@ class Checkout
 			$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $Sql, true));
 			$this->IdCliente = $conexion->lastInsertId();
 			$IdCliente = $this->IdCliente;
-			$coun= $this->Cantidad;
-			
+			$coun = $this->Cantidad;
+
 			$numeros = array();
-				$i = 0;
-				while ($i < $coun) {
-					$num = rand(0, 10000);
-					$numeroConCeros = str_pad($num, 4, "0", STR_PAD_LEFT);
-					if (in_array($numeroConCeros, $numeros) === false) {
-						array_push($numeros, $numeroConCeros);
-						$i++;
-					}
-				}
-					for ($i = 0; $i < $coun; $i++) {
-						$SqlNumero = "INSERT INTO numeros(numbers, idcliente)
-							VALUES (:numbers, :idcliente)";
-						$Instruc = $conexion->prepare($SqlNumero);
-						$Instruc->bindParam(':idcliente', $IdCliente,   PDO::PARAM_INT);
-						$Instruc->bindParam(':numbers',  $numeros[$i],      PDO::PARAM_INT);
-		
-						$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $SqlNumero, true));
+			$i = 0;
+			while ($i < $coun) {
+				$num = rand(0, 9999);
+				$numeroConCeros = str_pad($num, 4, "0", STR_PAD_LEFT);
+
+				$existe = $this->ConsultarNumero($conexion, $numeroConCeros);
+				if ($existe) {
+					continue;
 				}
 
+				if (in_array($numeroConCeros, $numeros) === false) {
+					array_push($numeros, $numeroConCeros);
+					$i++;
+				}
+			}
+			$num = $numeros;
+
+			for ($i = 0; $i < $coun; $i++) {
+				$SqlNumero = "INSERT INTO numeros(numbers, idcliente)
+								VALUES (:numbers, :idcliente)";
+				$Instruc = $conexion->prepare($SqlNumero);
+				$Instruc->bindParam(':idcliente', $IdCliente,   PDO::PARAM_INT);
+				$Instruc->bindParam(':numbers',  $numeros[$i],      PDO::PARAM_INT);
+
+				$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $SqlNumero, true));
+			}			
 			$conexion = null;
 			if ($Instruc) {
 				return true;
@@ -125,5 +132,45 @@ class Checkout
 			echo 'Ha surgido un error y no se puede ejecutar la consulta.' . $e->getMessage();
 			exit;
 		}
+	}
+
+	private function ConsultarNumero($conexion, $numero)
+	{
+		$existe = false;
+		$Sql = "SELECT EXISTS(SELECT 1 FROM numeros WHERE numbers = :number) AS existe";
+		$Instruc = $conexion->prepare($Sql);
+		$Instruc->bindParam(':number',  $numero,  PDO::PARAM_STR);
+		$Instruc->execute();
+		$existe = $Instruc->fetchColumn();
+
+		return $existe;
+	}
+
+	public static function Listar($Accion){
+		$conexion = new Conexion();
+        $conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+		$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		try{  
+               
+			if($Accion == 'Listar'){
+			$Sql = "SELECT numbers FROM numeros WHERE idcliente = :id";		
+				$Instruc = $conexion->prepare($Sql);   
+				$Instruc->bindParam(':id',  $IdCliente,  PDO::PARAM_STR);             
+            }   
+			$Instruc -> execute() or die(print_r($Instruc -> errorInfo()." - ".$Sql, true));
+			$Result = $Instruc->fetchAll();			
+					
+            $conexion = null;	
+            if($Instruc){
+				return $Result;
+			}else{
+				return false;
+			}
+		}catch(PDOException $e){
+			echo 'Ha surgido un error y no se puede ejecutar la consulta de usuario'.$e->getMessage();
+			exit;
+		}
+		
+		
 	}
 }

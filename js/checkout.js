@@ -35,7 +35,7 @@ $(document).ready(function () {
                         $("#alerta").append('<div class="alert alert-success alert-dismissible fade show" role="alert">Generando Numeros...<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
                         $("#alerta").css("display", "");
                         setTimeout(function () {
-                            window.location.href = "valiboletas.php";
+                            window.location.href = "success.php";
                         }, 1500);
                     } else {
                         $("#alerta").html('<div class="alert alert-danger"><button class="close" data-dismiss="alert"></button><a href="#" class="link"><i class="fa fa-exclamation-circle"></i> Upsss.</a> ' + msj + '.</div>');
