@@ -11,7 +11,6 @@ class Checkout
 	private $Sudtotal;
 	private $Iva;
 	private $Total;
-
 	public function __construct($Accion = null, $IdCliente = null, $Correo = null, $Nombre = null, $Direccion = null, $Numero_cel = null, $Cantidad = null, $Sudtotal = null, $Iva = null, $Total = null)
 	{
 		$this->Accion       = $Accion;
@@ -70,9 +69,7 @@ class Checkout
 	 *	Función para CRUD
 	 *	
 	 **********************************************************/
-
-	public function Gestionar()
-	{
+	public function Gestionar(){
 		$conexion = new Conexion();
 		$conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -100,28 +97,23 @@ class Checkout
 			while ($i < $coun) {
 				$num = rand(0, 9999);
 				$numeroConCeros = str_pad($num, 4, "0", STR_PAD_LEFT);
-
 				$existe = $this->ConsultarNumero($conexion, $numeroConCeros);
 				if ($existe) {
 					continue;
 				}
-
 				if (in_array($numeroConCeros, $numeros) === false) {
 					array_push($numeros, $numeroConCeros);
 					$i++;
 				}
 			}
 			$num = $numeros;
-
 			for ($i = 0; $i < $coun; $i++) {
-				$SqlNumero = "INSERT INTO numeros(numbers, idcliente)
-								VALUES (:numbers, :idcliente)";
+				$SqlNumero = "INSERT INTO numeros(numbers, idcliente)VALUES(:numbers, :idcliente)";
 				$Instruc = $conexion->prepare($SqlNumero);
 				$Instruc->bindParam(':idcliente', $IdCliente,   PDO::PARAM_INT);
 				$Instruc->bindParam(':numbers',  $numeros[$i],      PDO::PARAM_INT);
-
 				$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $SqlNumero, true));
-			}			
+			}
 			$conexion = null;
 			if ($Instruc) {
 				return true;
@@ -133,44 +125,40 @@ class Checkout
 			exit;
 		}
 	}
-
-	private function ConsultarNumero($conexion, $numero)
-	{
+	private function ConsultarNumero($conexion, $numero){
 		$existe = false;
 		$Sql = "SELECT EXISTS(SELECT 1 FROM numeros WHERE numbers = :number) AS existe";
 		$Instruc = $conexion->prepare($Sql);
 		$Instruc->bindParam(':number',  $numero,  PDO::PARAM_STR);
 		$Instruc->execute();
 		$existe = $Instruc->fetchColumn();
-
 		return $existe;
 	}
-
 	public static function Listar($Accion){
 		$conexion = new Conexion();
-        $conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+		$conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		try{  
-               
-			if($Accion == 'Listar'){
-			$Sql = "SELECT numbers FROM numeros WHERE idcliente = :id";		
-				$Instruc = $conexion->prepare($Sql);   
-				$Instruc->bindParam(':id',  $IdCliente,  PDO::PARAM_STR);             
-            }   
-			$Instruc -> execute() or die(print_r($Instruc -> errorInfo()." - ".$Sql, true));
-			$Result = $Instruc->fetchAll();			
-					
-            $conexion = null;	
-            if($Instruc){
+		try {
+			$Sql = "SELECT MAX(idcliente)  FROM clientes	";
+			$Instrucid = $conexion->prepare($Sql);
+			$Instrucid->execute() or die(print_r($Instrucid->errorInfo() . " - " . $Sql, true));
+			$Resultid = $Instrucid->fetchColumn();
+			if ($Accion == 'Listar') {
+				$Sql = "SELECT numbers FROM numeros WHERE idcliente = :id";
+				$Instruc = $conexion->prepare($Sql);
+				$Instruc->bindParam(':id',  $Resultid,  PDO::PARAM_STR);
+			}
+			$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $Sql, true));
+			$Result = $Instruc->fetchAll();
+			$conexion = null;
+			if ($Instruc) {
 				return $Result;
-			}else{
+			} else {
 				return false;
 			}
-		}catch(PDOException $e){
-			echo 'Ha surgido un error y no se puede ejecutar la consulta de usuario'.$e->getMessage();
+		} catch (PDOException $e) {
+			echo 'Ha surgido un error y no se puede ejecutar la consulta de usuario' . $e->getMessage();
 			exit;
 		}
-		
-		
 	}
 }
