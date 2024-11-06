@@ -17,7 +17,7 @@
         </video>
         <div class="container">
             <center>
-                <h1 class="titulo">Numeros De La Suerte</h1>
+                <h1 class="titulo">Números De La Suerte</h1>
             </center>
             <div class="row este">
                 <?php

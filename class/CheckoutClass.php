@@ -161,4 +161,28 @@ class Checkout
 			exit;
 		}
 	}
+
+	public static function Bar($Accion){
+		$conexion = new Conexion();
+		$conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+		$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		try {			
+			if ($Accion == 'Bar') {
+				$Sql = "SELECT COUNT(numbers) FROM numeros";
+				$Instruc = $conexion->prepare($Sql);				
+			}
+			$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $Sql, true));
+			$Result = $Instruc->fetchColumn();
+			$Porcent = ($Result / 9999) * 100 ;		
+			$conexion = null;
+			if ($Instruc) {
+				return $Porcent;
+			} else {
+				return false;
+			}
+		} catch (PDOException $e) {
+			echo 'Ha surgido un error y no se puede ejecutar la consulta de usuario' . $e->getMessage();
+			exit;
+		}
+	}
 }
