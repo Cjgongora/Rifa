@@ -101,19 +101,37 @@ $(document).ready(function () {
         var Numvali = document.getElementById("cantidad").value;
         var Totali = document.getElementById("total").innerText;
 
-        console.log(Numvali,Totali);
+        console.log(Numvali, Totali);
         if (Numvali < 3) {
             swal({
                 title: "Minimo 3 Boletas.",
-                type: "warning",          
+                type: "warning",
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "OK",
                 closeOnConfirm: false
             });
-        }else{
-            setTimeout(function () {                        
-                window.location.href = "checkout.php?cant="+Numvali;
-            },700);
+        } else {
+            setTimeout(function () {
+                window.location.href = "checkout.php?cant=" + Numvali;
+            }, 700);
+        }
+    });
+});
+
+$(document).ready(function () {
+    $(document).on('click', '.busca', function (event) {
+        var Numsucces = document.getElementById("search").value;
+        if (Numsucces == "") {
+            $('#alertabus').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">Te Hizo Falta El Número De Celular<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+            $('#search').focus();
+        } else {
+            swal({
+                title: "Buscando Boletas",
+                type: "success",
+            });
+            setTimeout(function () {
+                window.location.href = "search.php?search=" + Numsucces;
+            }, 1500);
         }
     });
 });

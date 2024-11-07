@@ -64,7 +64,6 @@
 </head>
 
 <body style="Background:#000000;">
-
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
@@ -72,10 +71,24 @@
                     <h1 style="color:#ffffff; margin-top:30px;">SORTEOS CARLOS GONGORA</h1>
                 </CENTER>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <div class="d-grid gap-2">
                     <button style="margin-top:10px; background:#d20a35; color:#fff;" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <h4>ESCOGER BOLETAS</h4>
+                        <h4>Ecoger Boletas</h4>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-grid gap-2">
+                    <button style="margin-top:10px; background:#8abd85; color:#fff;" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#Buscar">
+                        <h4>Buscar Boletas</h4>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-grid gap-2">
+                    <button style="margin-top:10px; background:#3d61ff; color:#fff;" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <h4>Lista De Clientes</h4>
                     </button>
                 </div>
             </div>
@@ -88,7 +101,7 @@
             <div class="container" style="margin-top: 15px;">
                 <div class="col-md-12">
                     <div class="progress" style="height:45px" role="progressbar" aria-label="Warning striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                            <?php  $Porcent = Checkout::Bar("Bar");?>
+                            <?php  $Porcent = Checkout::Bar("Bar","");?>
                         <div class="progress-bar progress-bar-striped bg-warning" style="width: <?php echo intval($Porcent); ?>%"><h3><?php echo intval($Porcent);?>%</h3></div>                    
                     </div>
                 </div>
@@ -125,7 +138,7 @@
             </ul>
         </div>
 
-        <!-- Modal -->
+        <!-- Modal Para escoger cantidad de boletas -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
@@ -188,6 +201,34 @@
                             <div class="col-md-3" style="margin-bottom:12px;">
                                 <div class="d-grid gap-2">
                                     <button class="btn btn-success vali" id="total">4000</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <!-- Modal Para escoger cantidad de boletas -->
+        <div class="modal fade" id="Buscar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Buscar Boletas</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <center>
+                            <div id="alertabus"></div>
+                        </center>
+                        <h5>Digita El Número De Celular</h5>
+                        <input class="form-control" type="number" value="" id="search" name="search">                       
+                        <div class="row" style="margin-top:28px;">                        
+                            <div class="col-md-3" style="margin-bottom:12px;">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success busca" id="total">Colsultar</button>
                                 </div>
                             </div>
                         </div>

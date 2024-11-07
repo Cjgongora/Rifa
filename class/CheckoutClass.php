@@ -11,7 +11,8 @@ class Checkout
 	private $Sudtotal;
 	private $Iva;
 	private $Total;
-	public function __construct($Accion = null, $IdCliente = null, $Correo = null, $Nombre = null, $Direccion = null, $Numero_cel = null, $Cantidad = null, $Sudtotal = null, $Iva = null, $Total = null)
+	private $Search;
+	public function __construct($Accion = null, $IdCliente = null, $Correo = null, $Nombre = null, $Direccion = null, $Numero_cel = null, $Cantidad = null, $Sudtotal = null, $Iva = null, $Total = null, $Search = null)
 	{
 		$this->Accion       = $Accion;
 		$this->IdCliente    = $IdCliente;
@@ -23,6 +24,7 @@ class Checkout
 		$this->Sudtotal     = $Sudtotal;
 		$this->Iva          = $Iva;
 		$this->Total        = $Total;
+		$this->Search       = $Search;
 	}
 	public function set_Accion($Accion)
 	{
@@ -64,12 +66,17 @@ class Checkout
 	{
 		return $this->Total = $Total;
 	}
+	public function set_Search($Search)
+	{
+		return $this->Search = $Search;
+	}
 	/**********************************************************
 	 *
 	 *	Función para CRUD
 	 *	
 	 **********************************************************/
-	public function Gestionar(){
+	public function Gestionar()
+	{
 		$conexion = new Conexion();
 		$conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -125,7 +132,8 @@ class Checkout
 			exit;
 		}
 	}
-	private function ConsultarNumero($conexion, $numero){
+	private function ConsultarNumero($conexion, $numero)
+	{
 		$existe = false;
 		$Sql = "SELECT EXISTS(SELECT 1 FROM numeros WHERE numbers = :number) AS existe";
 		$Instruc = $conexion->prepare($Sql);
@@ -134,7 +142,8 @@ class Checkout
 		$existe = $Instruc->fetchColumn();
 		return $existe;
 	}
-	public static function Listar($Accion){
+	public static function Listar($Accion)
+	{
 		$conexion = new Conexion();
 		$conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -162,18 +171,37 @@ class Checkout
 		}
 	}
 
-	public static function Bar($Accion){
+	public static function Bar($Accion,$numcel)
+	{
 		$conexion = new Conexion();
 		$conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		try {			
+		try {
 			if ($Accion == 'Bar') {
 				$Sql = "SELECT COUNT(numbers) FROM numeros";
-				$Instruc = $conexion->prepare($Sql);				
-			}
+				$Instruc = $conexion->prepare($Sql);
+			
 			$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $Sql, true));
 			$Result = $Instruc->fetchColumn();
-			$Porcent = ($Result / 9999) * 100 ;		
+			$Porcent = (4000 / 9999) * 100;
+		} else if ($Accion == 'Search') {
+			$Sql = "SELECT 
+			clientes.idcliente
+			, clientes.correo
+			, clientes.nombres
+			, clientes.direccion
+			, clientes.numero_cel
+			, clientes.cant
+			, clientes.sudtotal
+			, numeros.numbers
+			FROM
+			rifas.numeros
+			INNER JOIN rifas.clientes 
+			ON (numeros.idcliente = clientes.idcliente) WHERE clientes.numero_cel = ".$numcel;
+			$Instruc = $conexion->prepare($Sql);
+			$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $Sql, true));
+			$Porcent = $Instruc->fetchAll();
+		}
 			$conexion = null;
 			if ($Instruc) {
 				return $Porcent;
