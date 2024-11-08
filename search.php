@@ -47,8 +47,14 @@
 
 
 
-                <div class="col-md-12" style="margin-top: 35px;">
-                    <center><a href="index.php" class="btn btn-danger btn-lg">REGRESAR</a></center>
+                <div class="col-md-6" style="margin-top: 35px; margin-bottom:40px;">
+                    <center><a href="index.php" class="btn btn-danger btn-lg"><-- Pagina Principal</a></center>
+                    
+                </div>
+                
+                <div class="col-md-6" style="margin-top: 35px; margin-bottom:40px;">
+                    <center><a href="list.php" class="btn btn-primary btn-lg">Lista De Clientes</a></center>
+                    
                 </div>
             </div>
         </div>

@@ -183,7 +183,7 @@ class Checkout
 			
 			$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $Sql, true));
 			$Result = $Instruc->fetchColumn();
-			$Porcent = (4000 / 9999) * 100;
+			$Porcent = ($Result / 9999) * 100;
 		} else if ($Accion == 'Search') {
 			$Sql = "SELECT 
 			clientes.idcliente
@@ -201,7 +201,13 @@ class Checkout
 			$Instruc = $conexion->prepare($Sql);
 			$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $Sql, true));
 			$Porcent = $Instruc->fetchAll();
-		}
+		}if ($Accion == 'List') {
+			$Sql = "SELECT * FROM clientes";
+			$Instruc = $conexion->prepare($Sql);
+		
+		$Instruc->execute() or die(print_r($Instruc->errorInfo() . " - " . $Sql, true));
+		$Porcent = $Instruc->fetchAll();		
+	}
 			$conexion = null;
 			if ($Instruc) {
 				return $Porcent;

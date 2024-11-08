@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-    <?php include 'class/CheckoutClass.php'; ?>
-    <?php include 'class/ConexionClass.php'; ?>
+<?php include 'class/CheckoutClass.php'; ?>
+<?php include 'class/ConexionClass.php'; ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,9 +88,9 @@
             </div>
             <div class="col-md-4">
                 <div class="d-grid gap-2">
-                    <button style="margin-top:10px; background:#3d61ff; color:#fff;" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <a href="list.php" style="margin-top:10px; background:#3d61ff; color:#fff;" type="button" class="btn">
                         <h4>Lista De Clientes</h4>
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="col-sm-12">
@@ -101,8 +102,10 @@
             <div class="container" style="margin-top: 15px;">
                 <div class="col-md-12">
                     <div class="progress" style="height:45px" role="progressbar" aria-label="Warning striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                            <?php  $Porcent = Checkout::Bar("Bar","");?>
-                        <div class="progress-bar progress-bar-striped bg-warning" style="width: <?php echo intval($Porcent); ?>%"><h3><?php echo intval($Porcent);?>%</h3></div>                    
+                        <?php $Porcent = Checkout::Bar("Bar", ""); ?>
+                        <div class="progress-bar progress-bar-striped bg-warning" style="width: <?php echo intval($Porcent); ?>%">
+                            <h3><?php echo intval($Porcent); ?>%</h3>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -113,7 +116,7 @@
                 <img style="margin-top:30px;" src="img/banner1.jpg" class="img-fluid" alt="...">
             </div>
         </div>
-       
+
         <div class="sticky-container">
             <ul class="sticky">
                 <a href="https://www.facebook.com/programacionnet" target="_blank">
@@ -224,8 +227,8 @@
                             <div id="alertabus"></div>
                         </center>
                         <h5>Digita El Número De Celular</h5>
-                        <input class="form-control" type="number" value="" id="search" name="search">                       
-                        <div class="row" style="margin-top:28px;">                        
+                        <input class="form-control" type="number" value="" id="search" name="search">
+                        <div class="row" style="margin-top:28px;">
                             <div class="col-md-3" style="margin-bottom:12px;">
                                 <div class="d-grid gap-2">
                                     <button class="btn btn-success busca" id="total">Colsultar</button>
